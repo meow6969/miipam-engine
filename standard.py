@@ -23,31 +23,32 @@ def exponential(w):
 
         w.blit(background_image, background)
         for i in rika_chans:
-            i.timer -= c.get_time()
-            i.miipaaa -= c.get_time()
-            if i.timer < 0:
-                i.timer = random.randint(10000, 50000)
-                x = random.randint(-300, 350)
-                y = random.randint(70, 140)
-                rika_chan = classes.rikachan(w, x, y)
-                rika_chans.add(rika_chan)
-            elif i.miipaaa < 0:
-                i.miipaaa = random.randint(2000, 8000)
-                i.mouth_state = True
-                i.mouth = 1520
-                if i.invert:
-                    i.image = pygame.transform.flip(pygame.image.load('content/active.png'), True, False)
-                else:
-                    i.image = pygame.image.load('content/active.png')
-                miipam.play()
-            if i.mouth_state:
-                i.mouth -= c.get_time()
-                if i.mouth < 0:
-                    i.mouth_state = False
+            if i.image_file != "content/rare_rika_idle.png":
+                i.timer -= c.get_time()
+                i.miipaaa -= c.get_time()
+                if i.timer < 0:
+                    i.timer = random.randint(10000, 50000)
+                    x = random.randint(-300, 350)
+                    y = random.randint(70, 140)
+                    rika_chan = classes.rikachan(w, x, y)
+                    rika_chans.add(rika_chan)
+                elif i.miipaaa < 0:
+                    i.miipaaa = random.randint(2000, 8000)
+                    i.mouth_state = True
+                    i.mouth = 1520
                     if i.invert:
-                        i.image = pygame.transform.flip(pygame.image.load(i.image_file), True, False)
+                        i.image = pygame.transform.flip(pygame.image.load('content/active.png'), True, False)
                     else:
-                        i.image = pygame.image.load(i.image_file)
+                        i.image = pygame.image.load('content/active.png')
+                    miipam.play()
+                if i.mouth_state:
+                    i.mouth -= c.get_time()
+                    if i.mouth < 0:
+                        i.mouth_state = False
+                        if i.invert:
+                            i.image = pygame.transform.flip(pygame.image.load(i.image_file), True, False)
+                        else:
+                            i.image = pygame.image.load(i.image_file)
         rika_chans.draw(w)
 
         pygame.display.flip()
@@ -73,21 +74,22 @@ def manual(w):
                     x, y = pygame.mouse.get_pos()
                     rika_chans.add(classes.rikachan(w, x - 320, y - 240))
                 elif event.button == 3:
-                    new_list = reversed(list(rika_chans))
-                    x, y = pygame.mouse.get_pos()
-                    for i in new_list:
-                        if i.x + 200 < x < i.right - 200 and \
-                                i.y + 90 < y < i.bottom and \
-                                not i.mouth_state:
-                            i.miipaaa = random.randint(2000, 4000)
-                            i.mouth_state = True
-                            i.mouth = 1520
-                            if i.invert:
-                                i.image = pygame.transform.flip(pygame.image.load('content/active.png'), True, False)
-                            else:
-                                i.image = pygame.image.load('content/active.png')
-                            miipam.play()
-                            break
+                    if i.image_file != "content/rare_rika_idle.png":
+                        new_list = reversed(list(rika_chans))
+                        x, y = pygame.mouse.get_pos()
+                        for i in new_list:
+                            if i.x + 200 < x < i.snake_right - 200 and \
+                                    i.y + 90 < y < i.bottom and \
+                                    not i.mouth_state:
+                                i.miipaaa = random.randint(2000, 4000)
+                                i.mouth_state = True
+                                i.mouth = 1520
+                                if i.invert:
+                                    i.image = pygame.transform.flip(pygame.image.load('content/active.png'), True, False)
+                                else:
+                                    i.image = pygame.image.load('content/active.png')
+                                miipam.play()
+                                break
 
         for i in rika_chans:
             i.miipaaa -= c.get_time()
